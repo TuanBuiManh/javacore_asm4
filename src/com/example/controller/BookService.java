@@ -47,4 +47,8 @@ public class BookService {
     public void returnBook(int id){
         bookDao.returnBook(id);
     }
+
+    public ArrayList<Book> getAllBookIsBorrow(){
+        return bookDao.getAllBookIsBorrow();
+    }
 }

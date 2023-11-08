@@ -47,8 +47,9 @@ public class Console {
         System.out.println("4. Get All Book");
         System.out.println("5. Get All Book Student Borrow");
         System.out.println("6. Return Book");
-        System.out.println("7. Back");
-        int choice = readInt(1, 7);
+        System.out.println("7. Get All Book Is Borrow");
+        System.out.println("8. Back");
+        int choice = readInt(1, 8);
         return choice;
     }
 
@@ -81,6 +82,18 @@ public class Console {
         System.out.println("5. Back");
         int choice = readInt(1, 5);
         return choice;
+    }
+
+    public void preStart() throws SQLException {
+        while (true) {
+            System.out.println("Staff Login !!!");
+            boolean result = loginPreparedStatement();
+            if (result) {
+                break;
+            } else {
+                System.out.println("Login fail, Please login again !!!");
+            }
+        }
     }
 
     public void start() throws SQLException, ParseException {
@@ -128,6 +141,9 @@ public class Console {
                             returnBook();
                             break;
                         case 7:
+                            getAllBookIsBorrow();
+                            break;
+                        case 8:
                             break;
                     }
                     break;
@@ -145,7 +161,7 @@ public class Console {
                     }
                     break;
                 case 3:
-                    while (true) {
+                    /*while (true) {
                         System.out.println("Staff Login !!!");
                         boolean result = loginPreparedStatement();
                         if (result) {
@@ -153,7 +169,7 @@ public class Console {
                         } else {
                             System.out.println("Login fail, Please login again !!!");
                         }
-                    }
+                    }*/
                     int choice4 = menuStaff();
                     switch (choice4) {
                         case 1:
@@ -381,5 +397,15 @@ public class Console {
         System.out.println("Enter book id");
         int id = readInt(0, Integer.MAX_VALUE);
         bookService.returnBook(id);
+    }
+
+    private void getAllBookIsBorrow() {
+        System.out.println("--All Book Is Borrow--");
+        System.out.println("ID\tName\tAuthor\tPublisher\tCategory\tPrice\tDate\tStatus");
+        ArrayList<Book> allBooks = bookService.getAllBookIsBorrow();
+        allBooks.forEach(book -> {
+            System.out.println(book.getId() + "\t" + book.getName() + "\t" + book.getAuthor() + "\t" + book.getPublisher()
+                    + "\t" + book.getCategory() + "\t" + book.getPrice() + "\t" + book.getDate() + "\t" + book.getStatus());
+        });
     }
 }

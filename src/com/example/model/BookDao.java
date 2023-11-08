@@ -25,4 +25,6 @@ public interface BookDao {
     public boolean isBorrow(int id);
 
     public void returnBook(int id);
+
+    public ArrayList<Book> getAllBookIsBorrow();
 }

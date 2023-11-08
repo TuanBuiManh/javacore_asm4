@@ -21,6 +21,7 @@ public class BookDaoImpl implements BookDao {
     private final String SQL_GET_ALL_BOOK_STUDENT_BORROW = "SELECT * FROM book WHERE status = ?";
     private final String SQL_BOOK_IS_BORROW = "SELECT * FROM book WHERE id = ?";
     private final String SQL_RETURN_BOOK = "UPDATE book SET status = 0 WHERE id = ?";
+    private final String SQL_GET_ALL_BOOK_IS_BORROW = "SELECT * FROM book WHERE status > 0";
 
     public BookDaoImpl() throws SQLException {
     }
@@ -249,5 +250,29 @@ public class BookDaoImpl implements BookDao {
         } catch (SQLException ex) {
             Logger.getLogger(TicketDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public ArrayList<Book> getAllBookIsBorrow() {
+        ArrayList<Book> allBooks = new ArrayList();
+        try (PreparedStatement pstm = conn.prepareStatement(SQL_GET_ALL_BOOK_IS_BORROW)) {
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    Book book = new Book();
+                    book.setId(rs.getInt(1));
+                    book.setName(rs.getString(2));
+                    book.setAuthor(rs.getString(3));
+                    book.setPublisher(rs.getString(4));
+                    book.setCategory(rs.getString(5));
+                    book.setPrice(rs.getDouble(6));
+                    book.setDate(rs.getString(7));
+                    book.setStatus(rs.getInt(8));
+                    allBooks.add(book);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return allBooks;
     }
 }
